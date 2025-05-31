@@ -16,7 +16,7 @@ export default async function getOverviewPageText() {
   const last_phase_status = phases_status[0];
   let markdownFilePath: string;
   if (currentPhase.phaseorder == -1) {
-    markdownFilePath = path.join("public", "texts", "welcome.md");
+    markdownFilePath = path.join(process.cwd(), "public", "texts", "welcome.md");
   } else if (
     last_phase_status !== undefined &&
     last_phase_status.outcome == false &&
@@ -24,6 +24,7 @@ export default async function getOverviewPageText() {
     currentPhase.phaseid != last_phase_status.phase.phaseid
   ) {
     markdownFilePath = path.join(
+      process.cwd(),
       "public",
       "texts",
       last_phase_status.phase.phasename,
@@ -31,6 +32,7 @@ export default async function getOverviewPageText() {
     );
   } else if (new Date(currentPhase.enddate) >= currentTime) {
     markdownFilePath = path.join(
+      process.cwd(),
       "public",
       "texts",
       currentPhase.phasename,
@@ -38,6 +40,7 @@ export default async function getOverviewPageText() {
     );
   } else if (currentPhase.finished_evaluation == null) {
     markdownFilePath = path.join(
+      process.cwd(),
       "public",
       "texts",
       currentPhase.phasename,
@@ -45,6 +48,7 @@ export default async function getOverviewPageText() {
     );
   } else if (last_phase_status.outcome == false) {
     markdownFilePath = path.join(
+      process.cwd(),
       "public",
       "texts",
       currentPhase.phasename,
@@ -52,13 +56,14 @@ export default async function getOverviewPageText() {
     );
   } else if (last_phase_status.outcome == true) {
     markdownFilePath = path.join(
+      process.cwd(),
       "public",
       "texts",
       currentPhase.phasename,
       "passed.md",
     );
   } else {
-    markdownFilePath = path.join("public", "texts", "error.md");
+    markdownFilePath = path.join(process.cwd(), "public", "texts", "error.md");
   }
   const markdownContent = fs.readFileSync(markdownFilePath, "utf8");
   const contentHtml = await markdownToHtml(markdownContent);
